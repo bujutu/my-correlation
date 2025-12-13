@@ -8,23 +8,26 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <h1>結果</h1>
+  <header>My correlation</header>
 
-  <label>表示する変数ペア:
-    <select id="pair-select">
-      <option value="x-y">X × Y</option>
-      <option value="x-z">X × Z</option>
-      <option value="y-z">Y × Z</option>
-    </select>
-  </label>
+  <main>
+    <h1>結果</h1>
+  
+    <select id="pair-select"></select>
+  
+    <canvas id="lineChart"></canvas>
+    <canvas id="scatterChart"></canvas>
+  
+    <div id="correlation"></div>
+    <div id="reliability"></div>
 
-  <canvas id="lineChart"></canvas>
-  <canvas id="scatterChart"></canvas>
-
-  <p id="correlation"></p>
-
-  <p><a href="index.html">← 入力に戻る</a></p>
-
+    <p><a href="index.html">← 入力に戻る</a></p>
+  
+    <button id="csv">CSVで出力</button>
+  </main>
+  
+  <footer>…</footer>
+  
   <script src="js/storage.js"></script>
   <script src="js/result.js"></script>
 </body>
