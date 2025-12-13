@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Correlation - Result</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>結果</h1>
+
+  <label>表示する変数ペア:
+    <select id="pair-select">
+      <option value="x-y">X × Y</option>
+      <option value="x-z">X × Z</option>
+      <option value="y-z">Y × Z</option>
+    </select>
+  </label>
+
+  <canvas id="lineChart"></canvas>
+  <canvas id="scatterChart"></canvas>
+
+  <p id="correlation"></p>
+
+  <p><a href="index.html">← 入力に戻る</a></p>
+
+  <script src="js/storage.js"></script>
+  <script src="js/result.js"></script>
+</body>
+</html>
