@@ -1,7 +1,16 @@
 const data = loadData();
-const select = document.getElementById("pair-select");
+
+if (!data.records || data.records.length === 0) {
+  document.querySelector("main").innerHTML =
+    "<p>まだデータがありません。入力ページから記録してください。</p>";
+  throw new Error("No data");
+}
 
 const vars = data.meta.vars;
+const select = document.getElementById("pair-select");
+
+let lineChart = null;
+let scatterChart = null;
 
 // セレクト生成
 select.innerHTML = `
@@ -10,9 +19,8 @@ select.innerHTML = `
 <option value="y-z">${vars.y.name} × ${vars.z.name}</option>
 `;
 
-let lineChart, scatterChart;
-
-function correlation(xs, ys) {
+// 相関係数
+function pearson(xs, ys) {
   const n = xs.length;
   const mx = xs.reduce((a,b)=>a+b)/n;
   const my = ys.reduce((a,b)=>a+b)/n;
@@ -25,73 +33,126 @@ function correlation(xs, ys) {
   return num / Math.sqrt(dx*dy);
 }
 
-function render() {
-  const [a, b] = pairSelect.value.split("-");
-  const xs = data.records.map(r => r[a]);
-  const ys = data.records.map(r => r[b]);
-
-  if (lineChart) lineChart.destroy();
-  if (scatterChart) scatterChart.destroy();
-
-  lineChart = new Chart(document.getElementById("lineChart"), {
-    type: "line",
-    data: {
-      labels: xs.map((_, i) => i + 1),
-      datasets: [
-        { label: data.meta[a], data: xs },
-        { label: data.meta[b], data: ys }
-      ]
-    }
-  });
-
-  scatterChart = new Chart(document.getElementById("scatterChart"), {
-    type: "scatter",
-    data: {
-      datasets: [{
-        label: `${data.meta[a]} × ${data.meta[b]}`,
-        data: xs.map((x,i)=>({x, y: ys[i]}))
-      }]
-    }
-  });
-
-  const r = correlation(xs, ys);
-  document.getElementById("correlation").textContent =
-    `相関係数: ${r.toFixed(3)}`;
-}
-
-pairSelect.addEventListener("change", render);
-render();
-
-function pearson(x,y){
-  const n=x.length;
-  const mx=x.reduce((a,b)=>a+b)/n;
-  const my=y.reduce((a,b)=>a+b)/n;
-  let num=0,dx=0,dy=0;
-  for(let i=0;i<n;i++){
-    num+=(x[i]-mx)*(y[i]-my);
-    dx+=(x[i]-mx)**2;
-    dy+=(y[i]-my)**2;
-  }
-  return num/Math.sqrt(dx*dy);
-}
-
-function reliability(r,n){
+function correlationReliability(r,n){
   if(n<10) return "サンプル不足";
   if(Math.abs(r)>0.7) return "強い相関の可能性";
   if(Math.abs(r)>0.4) return "中程度の相関";
   return "弱い相関";
 }
 
-// CSV
-document.getElementById("csv").onclick = () => {
-  let csv = "x,y,z,time\n";
-  data.records.forEach(r=>{
-    csv+=`${r.x},${r.y},${r.z},${r.time}\n`;
+
+/* =========================
+   グラフ描画
+========================= */
+function render() {
+  const [a, b] = pairSelect.value.split("-");
+
+  const xs = data.records.map(r => r[a]);
+  const ys = data.records.map(r => r[b]);
+  const labels = data.records.map((_, i) => i + 1);
+
+  const aLabel = `${vars[a].name}${vars[a].unit ? "（" + vars[a].unit + "）" : ""}`;
+  const bLabel = `${vars[b].name}${vars[b].unit ? "（" + vars[b].unit + "）" : ""}`;
+
+  if (lineChart) lineChart.destroy();
+  if (scatterChart) scatterChart.destroy();
+
+  /* 折れ線グラフ */
+  lineChart = new Chart(document.getElementById("lineChart"), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: aLabel,
+          data: xs,
+          yAxisID: "y1"
+        },
+        {
+          label: bLabel,
+          data: ys,
+          yAxisID: "y2"
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y1: {
+          type: "linear",
+          position: "left",
+          title: {
+            display: true,
+            text: aLabel
+          }
+        },
+        y2: {
+          type: "linear",
+          position: "right",
+          grid: { drawOnChartArea: false },
+          title: {
+            display: true,
+            text: bLabel
+          }
+        }
+      }
+    }
   });
-  const blob = new Blob([csv],{type:"text/csv"});
+
+  /* 散布図 */
+  scatterChart = new Chart(document.getElementById("scatterChart"), {
+    type: "scatter",
+    data: {
+      datasets: [{
+        label: `${vars[a].name} × ${vars[b].name}`,
+        data: xs.map((x, i) => ({ x, y: ys[i] }))
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: aLabel
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: bLabel
+          }
+        }
+      }
+    }
+  });
+
+  /* 相関表示 */
+  const r = pearson(xs, ys);
+  document.getElementById("correlation-value").textContent =
+    `相関係数 r = ${r.toFixed(3)}`;
+  document.getElementById("correlation-reliability").textContent =
+    correlationReliability(r, xs.length);
+}
+
+
+// CSV
+document.getElementById("csv-export").addEventListener("click", () => {
+  let csv = "time,x,y,z\n";
+  data.records.forEach(r => {
+    csv += `${r.time},${r.x},${r.y},${r.z}\n`;
+  });
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
+  a.href = url;
   a.download = "my_correlation.csv";
   a.click();
-};
 
+  URL.revokeObjectURL(url);
+});
+
+pairSelect.addEventListener("change", render);
+render();
