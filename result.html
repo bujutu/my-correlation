@@ -12,21 +12,38 @@
 
   <main>
     <h1>結果</h1>
+
+    <section>
+      <label for="pair-select">表示する変数ペア</label>
+      <select id="pair-select"></select>
+    </section>
+    
+    <section>
+      <canvas id="lineChart"></canvas>
+    </section>
   
-    <select id="pair-select"></select>
+    <section>
+      <canvas id="scatterChart"></canvas>
+    </section>
+
   
-    <canvas id="lineChart"></canvas>
-    <canvas id="scatterChart"></canvas>
-  
-    <div id="correlation"></div>
-    <div id="reliability"></div>
+    <section class="correlation-box">
+      <div id="correlation-value"></div>
+      <div id="correlation-reliability"></div>
+    </section>
 
     <p><a href="index.html">← 入力に戻る</a></p>
   
-    <button id="csv">CSVで出力</button>
+    <section class="csv-section">
+      <button id="csv-export">CSVで出力</button>
+    </section>
   </main>
   
-  <footer>…</footer>
+  <footer>
+    <a href="#">使い方</a> |
+    <a href="#">プライバシーポリシー</a> |
+    <a href="#">お問い合わせ</a>
+  </footer>
   
   <script src="js/storage.js"></script>
   <script src="js/result.js"></script>
