@@ -138,7 +138,7 @@ function render() {
 
 // CSV
 document.getElementById("csv-export").addEventListener("click", () => {
-  let csv = "time,x,y,z\n";
+  let csv = `time,${vars.x.name},${vars.y.name},${vars.z.name}\n`;
   data.records.forEach(r => {
     csv += `${r.time},${r.x},${r.y},${r.z}\n`;
   });
