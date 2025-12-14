@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My correlation - 使い方</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header>
+  My correlation
+</header>
+
+<main>
+  <h1>使い方</h1>
+
+  <section>
+    <h2>このアプリでできること</h2>
+    <p>
+      <strong>My correlation</strong> は、あなたの気分や生活習慣などの数値を記録し、
+      それらの関係（相関）をグラフで可視化するための個人向けウェブアプリです。
+    </p>
+    <p>
+      記録したデータはすべて <strong>あなたのブラウザ内（LocalStorage）</strong> にのみ保存され、
+      サーバーへ送信されることはありません。
+    </p>
+  </section>
+
+  <section>
+    <h2>① 変数を設定する</h2>
+    <p>
+      入力ページでは、まず記録したい項目（変数）を設定します。
+    </p>
+    <ul>
+      <li>デフォルトでは「気分」「睡眠時間」「アルコール摂取量」が設定されています</li>
+      <li>各変数名の右にある <strong>[保存]</strong> を押すと、その変数名が確定します</li>
+    </ul>
+    <p>
+      例：
+    </p>
+    <ul>
+      <li>気分 → 仕事の満足度</li>
+      <li>睡眠時間 → 睡眠の質</li>
+      <li>アルコール摂取量 → 運動量</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>② 値を入力して保存する</h2>
+    <ul>
+      <li>1つ目の変数はスライダー（0〜10）で入力します</li>
+      <li>2つ目・3つ目の変数は数値で入力します</li>
+      <li>単位（時間、杯、回など）は自由に入力できます</li>
+    </ul>
+
+    <p>
+      <strong>[保存]</strong> ボタンを押すと、入力した値が記録されます。
+      保存時には、記録を祝うアニメーションが表示されます 🎉
+    </p>
+  </section>
+
+  <section>
+    <h2>③ 結果を見る</h2>
+    <p>
+      「結果を見る」リンクから、結果ページに移動できます。
+    </p>
+
+    <h3>折れ線グラフ</h3>
+    <ul>
+      <li>時間の経過に沿った変数の変化を表示します</li>
+      <li>左右それぞれの縦軸に、選択した変数名と単位が表示されます</li>
+    </ul>
+
+    <h3>散布図</h3>
+    <ul>
+      <li>2つの変数の関係を点で表示します</li>
+      <li>横軸・縦軸には変数名と単位が表示されます</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>④ 相関係数について</h2>
+    <p>
+      結果ページの下部には、2つの変数の <strong>相関係数（r）</strong> が表示されます。
+    </p>
+    <ul>
+      <li>r が 1 に近い → 強い正の相関</li>
+      <li>r が -1 に近い → 強い負の相関</li>
+      <li>r が 0 に近い → 相関が弱い、またはない</li>
+    </ul>
+    <p>
+      あわせて、サンプル数を考慮した <strong>相関の信頼性</strong> も表示されます。
+    </p>
+  </section>
+
+  <section>
+    <h2>⑤ CSVでデータを出力する</h2>
+    <p>
+      結果ページの下部にある <strong>[CSVで出力]</strong> ボタンを押すと、
+      これまでに記録したすべてのデータを CSV ファイルとして保存できます。
+    </p>
+    <p>
+      CSV は Excel や Google スプレッドシートなどで開くことができます。
+    </p>
+  </section>
+
+  <section>
+    <h2>データの保存について</h2>
+    <ul>
+      <li>データはブラウザ内にのみ保存されます</li>
+      <li>別の端末やブラウザでは共有されません</li>
+      <li>ブラウザのデータを削除すると、記録も削除されます</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-title">マイコリ</div>
+  <a href="./how-to.html">使い方</a> |
+  <a href="https://bujutu.github.io/privacypolicy">プライバシーポリシー</a> |
+  <a href="https://forms.gle/V4uRRyNumz2XvtGB6">お問い合わせ</a>
+</footer>
+
+</body>
+</html>
