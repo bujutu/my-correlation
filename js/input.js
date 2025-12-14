@@ -51,7 +51,7 @@ document.getElementById("save-record").onclick = () => {
 function celebrate() {
   const confetti = document.createElement("div");
   confetti.className = "celebrate";
-  confetti.textContent = "🎉 保存完了！ 🎉";
+  confetti.innerHTML = "\\\||///<br>完璧だ！<br>///||\\\";
   document.body.appendChild(confetti);
   setTimeout(() => confetti.remove(), 2000);
 }
