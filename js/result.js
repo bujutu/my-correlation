@@ -45,7 +45,7 @@ function correlationReliability(r,n){
    グラフ描画
 ========================= */
 function render() {
-  const [a, b] = pairSelect.value.split("-");
+  const [a, b] = select.value.split("-");
 
   const xs = data.records.map(r => r[a]);
   const ys = data.records.map(r => r[b]);
@@ -154,5 +154,5 @@ document.getElementById("csv-export").addEventListener("click", () => {
   URL.revokeObjectURL(url);
 });
 
-pairSelect.addEventListener("change", render);
+select.addEventListener("change", render);
 render();
